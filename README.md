@@ -175,3 +175,7 @@ Empirica.on("game", (ctx, { game }) => {
   game.start();
 });
 ```
+
+# running this demo
+
+A batch needs to be running in order for the players to have something to latch onto, but it doesnt have to have anything special in terms of treatments because we ignore them altogether. This isn't super clean at the moment, but whatever.
