@@ -114,12 +114,6 @@ Empirica.on("player", "groupCode", (ctx, { player, groupCode }) => {
   // get the batch that the player is joining
   const openBatches = getOpenBatches(ctx);
   const batch = selectOldestBatch(openBatches);
-  if (batch) {
-    player.set("batchID", batch.id);
-    console.log("player.set batchID", batch.id);
-  }
-  console.log("Batch is:", player.get("batchID"));
-
   if (!batch) {
     console.log("Batch not found");
     return;

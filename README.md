@@ -8,6 +8,9 @@ To do this we made the following changes:
 
 ## `client/src/app.jsx`
 
+First we need to tell empirica not to display a nogames page if there are no games,
+because we are going to create a game for the player based on what they submit.
+
 ```jsx
 <EmpiricaContext
   introSteps={introSteps}
@@ -18,11 +21,20 @@ To do this we made the following changes:
 </EmpiricaContext>
 ```
 
-We did not repace the nogames page, but in the future we should do this so that if there is no batch open the players cannot enter their ids.
+In the future we should create a similar page to show when there are no batches open, so the players cannot enter their ids.
 
 ## `client/src/intro-exit/Introduction.jsx`
 
-Added code to handle a input box submission and set a value on the player object
+Added code to handle a input box and use it to set a value on the player object when the player submits.
+
+```jsx
+// in the return statement
+<input
+  type="text"
+  className="border border-gray-300 rounded-md w-full px-3 py-2 mt-1"
+  onChange={handleGroupCodeChange}
+/>
+```
 
 ```jsx
 // in the component
@@ -38,15 +50,6 @@ function onSubmit() {
   player.set("groupCode", groupCode); // new
   next();
 }
-```
-
-```jsx
-// in the return statement
-<input
-  type="text"
-  className="border border-gray-300 rounded-md w-full px-3 py-2 mt-1"
-  onChange={handleGroupCodeChange}
-/>
 ```
 
 # Server side
@@ -120,12 +123,6 @@ Empirica.on("player", "groupCode", (ctx, { player, groupCode }) => {
   // get the batch that the player is joining
   const openBatches = getOpenBatches(ctx);
   const batch = selectOldestBatch(openBatches);
-  if (batch) {
-    player.set("batchID", batch.id);
-    console.log("player.set batchID", batch.id);
-  }
-  console.log("Batch is:", player.get("batchID"));
-
   if (!batch) {
     console.log("Batch not found");
     return;
@@ -149,7 +146,7 @@ Empirica.on("player", "groupCode", (ctx, { player, groupCode }) => {
         key: "startingPlayerId",
         value: player.id,
       },
-      { key: "treatment", value: { playerCount: 2 } },
+      { key: "treatment", value: { playerCount: 2 } }, // this doesnt do anything, but empirica complains if its not there
     ]);
     return; // first player is assigned after the game is created
   }
