@@ -1,0 +1,9 @@
+name = "external-grouping"
+
+[tajriba.auth]
+srtoken = "hfDibalITiwGwnjy"
+
+[[tajriba.auth.users]]
+name = "Admin"
+username = "admin"
+password = "HzbHhBOZ"
